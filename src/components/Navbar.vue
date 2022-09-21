@@ -8,7 +8,7 @@
            <span class="project_title1">WETLAND MONITORING AND ASSESSMENT FOR TRANSBOUNDARY BASINS IN SOUTHERN
           AFRICA</span> 
           <br>
-          <span class="wemast_span" style="color:steelblue;font-weight:bold">(WeMAST)</span>
+          <span class="wemast_span" style="color:steelblue;font-weight:bold">(WeMAST 2.0)</span>
         </div>
         <div class="partners_logos">
             <img class="gmes" src="../assets/logos/Gmes.png" alt="">
@@ -68,8 +68,8 @@
 }
 .project_title1{
   font-size: 13px;
-  font-weight: 800;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: bolder;
+  /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
 }
 .partners_logos{
     position: absolute;

@@ -1,35 +1,222 @@
-/* @import "./base.css";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+.app{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+  /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
+}
+.navbar{
+  position: absolute;
+  top: 3vh;
+  left: -0.3vw;
+}
+.selections{
+  position: absolute;
+  top: 7vh;
+  left: -0.3vw;
+}
+#map{
+  position: absolute;
+  top: 24vh;
+  left:-0.3vw;
+  width: 99vw;
+  height: 75vh;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+
+/* side nav */
+.toggle_icon{
+  position: absolute;
+  top: 3.8vh;
+  left: -0.2vw;
+  /* padding: 1px; */
+  background-color: rgb(255, 255, 255);
+  width: 50px;
+  height: 50px;
+  padding-left: 5px;
+  padding-top: 5px;
+  border-radius: 50%;
+}
+.metadata_text{
+  cursor: pointer;
+   position: absolute;
+    left: 15vw; 
+    top: 0.1vh;
+     font-size: 16px; 
+     font-weight: bold;
+     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+.data_analysis_text{
+  cursor: pointer;
+   position: absolute;
+font-size: 16px; 
+     font-weight: bold;
+     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+.sidenav {
+height: 94vh;
+position: fixed;
+z-index: 3000;
+top: 14vh;
+right: 0;
+caret-color: transparent;
+background-color:#fff;
+}
+#mySidenav {
+transition: width 0.3s;
+}
+.sidenav_body {
+height: 90%;
+
+margin-left: 20px;
+overflow-y: scroll;
+position: relative;
+scrollbar-width: thin;
+scrollbar-color: steelblue white;
+}
+.sidenav_body::-webkit-scrollbar {
+width: 5px;
+}
+.sidenav_body::-webkit-scrollbar-track {
+background: white; /* color of the tracking area */
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.sidenav_body::-webkit-scrollbar-thumb {
+background-color: steelblue; /* color of the scroll thumb */
+border-radius: 20px; /* roundness of the scroll thumb */
+border: 1px solid rgb(224, 213, 193); /* creates padding around scroll thumb */
+}
+.protrusion {
+top: 110px;
+position: absolute;
+border-radius: 50%;
+width: 45px;
+height: 45px;
+cursor: pointer;
+}
+#close {
+margin-top: 9px;
+margin-left: 8px;
+}
+#open {
+margin-top: 9px;
+margin-left: 8px;
+transform: rotate(180deg);
+}
+@media screen and (max-height: 800px) {
+.logos_container {
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+}
+@media screen and (min-height: 901px) {
+.logos_container {
+  position: absolute;
+  bottom: 0;
+  margin-left: 25%;
+}
+}
+#mapContainer >>> .base_layer_list {
+list-style: none;
+font-size: 15px;
+padding: 5px;
+}
+.side_nav_swap {
+color: #1481c3;
+border-bottom: solid 3px #1481c3;
+padding-bottom: 6px;
+font-weight: bolder;
+font-size: 18px;
+margin-bottom: 20px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+table, th, td {
+border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+  margin-top: 40px;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */
+
+th{
+font-weight: bolder;
+}
+
+tr:nth-child(even) {
+background-color: #ddd;
+}
+table {
+  border-collapse: separate;
+  text-indent: initial;
+  border-spacing: 2px;
+}
+.map_controls{
+  position: absolute;
+  z-index: 500;
+  top: 2vh;
+  left: 83vw;
+  /* background-color: #fff; */
+  display: flex;
+  gap: 0.5rem;
+}
+#map_icons{
+  height: 20px;
+  width:20px;
+  padding: 3px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.opacity{
+  z-index: 500;
+  position: absolute;
+  top: 2vh;
+  left:72vw;
+  cursor: pointer;
+  height: 25px;
+  width: 200px;
+  background-color: rgb(255, 255, 255);
+  /* border-radius: 10px; */
+  /* padding-left: 30px; */
+}
+#opacity{
+  position: absolute;
+  top: 0.5vh;
+  left:0.25vw;
+  z-index: 500;
+  font-size: 14px;
+color: #000;
+
+}
+#image-opacity{
+  z-index: 500;
+  position: absolute;
+  top: 0.1vh;
+  left:2.5vw;
+  cursor: pointer;
+  color: rgb(192, 20, 20);
+  /* background-color: #fff; */
+
+}
+#sldOpacity{
+  z-index: 1500;
+  position: absolute;
+  top: 1vh;
+  left:3vw;
+  cursor: pointer;
+  height: 5px;
+ 
+  background-color: #000;
+  
+}
+#sldOpacity::-webkit-slider-thumb {
+  z-index: 1500;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  background-color: #099f46;
+  /* overflow: visible; */
+  cursor: pointer;
+}
+

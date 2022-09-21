@@ -9,6 +9,22 @@
     </div>
 
     <div id="map">
+      <div class="opacity">
+        <span id="opacity">Opacity:</span>
+        <span id="image-opacity"> </span>
+        <input type="range" id="sldOpacity" min="0" max="1" step="0.1" value="1" />
+       </div>
+      <div class="map_controls">
+    
+       <img  title="Download tif" id="map_icons" src="./assets/mapIcons/download_tif.svg" alt="" class="download_tiff">
+       <img title="Download Map" id="map_icons" src="./assets/mapIcons/download_map.svg" alt="" class="download_map">
+       <img title="Measure Distance" id="map_icons" src="./assets/mapIcons/ruler.svg" alt="" class="measure">
+       <img title="" id="map_icons" src="./assets/mapIcons/layers-24px.svg" alt="" class="layers">
+       <img title="Draw Polygon" id="map_icons" src="./assets/mapIcons/square.svg" alt="" class="draw_polygon">
+       <img title="Zoom in" id="map_icons" src="./assets/mapIcons/add-24px.svg" alt="" class="zoom_in" @click="zoom_in">
+       <img title="Zoom out" id="map_icons" src="./assets/mapIcons/remove-24px.svg" alt="" class="zoom_out" @click="zoom_out">
+       <img  title="Help" id="map_icons" src="./assets/mapIcons/help.svg" alt="" class="help">
+      </div>
 
     </div>
 
@@ -18,11 +34,11 @@
     </div>
 
     <!-- sidenav goes here -->
-    <div id="sidenav" class="sidenav bg-white">
+    <div id="sidenav" class="sidenav">
       <div id="mySidenav" style="height: 100%">
         <div id="protrusion" class="bg-white protrusion">
           <div class="toggle_icon" @click.stop="toggle_nav">
-            <img id="close" src="./assets/uiIcons/drawer.svg" v-if="!show_sidenav" />
+            <img style="margin-left:2px" id="close" src="./assets/uiIcons/drawer.svg" v-if="!show_sidenav" />
             <img id="open" src="./assets/uiIcons/drawer.svg" v-if="show_sidenav" />
           </div>
         </div>
@@ -37,8 +53,8 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="q-pa-xs">
-                    <div
-                      class="text-weight-bolder text-h6"
+                    <div class="data_analysis_text"
+                     
                       @click="handleAnalysisMetaSwap2()"
                       style="cursor: pointer"
                     >
@@ -56,9 +72,9 @@
                 <div class="col-md-6">
                   <div class="q-pa-xs">
                     <div
-                      class="text-weight-bolder text-h6"
+                      class="metadata_text"
                       @click="handleAnalysisMetaSwap()"
-                      style="cursor: pointer; position: absolute; left: 15vw; top: -3vh;"
+                      style=""
                     >
                       <span
                         :class="
@@ -77,7 +93,9 @@
           <div  v-if="analysis_swap_toggle === 'data_analysis'" >
             <!-- <q-btn flat label="get WMS" @click="getWMS_Layer" />    -->
 
-            <p>
+            <p style="margin-top:40px">
+              <Label style="margin-top:40px; font-weight: 700;">Summary</Label>
+              <br>
               {{ summary_text }}
             </p>
             <br />
@@ -100,7 +118,7 @@
          
             <br />
             <label class="text-bold" style="font-family: Montserrat; font-weight: 800;">
-              <div class="chart2_title_sidebar"  style="font-family: 'Trebuchet MS'; font-weight: 800;">No. of blackspots in {{storeUserSelections.selected_region}} that are {{storeUserSelections.selected_cause}}</div>
+              <div class="chart2_title_sidebar"  style="font-family: 'Trebuchet MS'; font-weight: 800;">  {{storeUserSelections.selected_cause}} blackspots in {{storeUserSelections.selected_region}}</div>
             </label>
             
             <div class="charts2_sidebar"  >
@@ -120,7 +138,7 @@
           
 
 
-              <!-- <table style="width:100%">
+              <table style="width:100%">
                   <tr>
                     <th>Region</th>
                     <td> {{storeUserSelections.selected_region}}</td>
@@ -185,7 +203,7 @@
                     
                     
                   </tr>
-                </table> -->
+                </table>
           </div>
           <!-- <LineChart :height="250" :width="250" /> -->
           <p class="partners" style="font-weight:bold;font-size:16px;position: relative;top:53vh;left: 8vw;" >Technical Partners</p>
@@ -213,6 +231,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-sidebar-v2";
 import SideBarView from "./views/SideBarView.vue"
 import { close_nav, open_nav } from "./Helpers/SideNavControls";
+import { leaflet_custom_controls } from "./CustomMapControls/LeafletCustomControls"
 import { onMounted, ref } from '@vue/runtime-core';
 import { useCounterStore } from '@/stores/counter';
 
@@ -229,16 +248,28 @@ let summary_text =  ` Land use land cover maps monitor the land use in a specifi
       that occur within a river basin or a wetland. The study of land cover may
       also be used to predict future trends of an ecosystem while understanding
       its sustainability.`
-
+let show_base_layers = ref(true)
+let baseMaps =ref({}) 
+let current_top_base_layer= ref(null) //holds the current later at the top
+let previous_wemast_ctrl_id = ref(null)  //holds the id of the element clicked  prevously
+let current_raster_layer = ref(null) //holds curren requested layer geoserver
 
 
 //variables
 const storeUserSelections = useCounterStore()
+let osm = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        }
+      );
 const mapboxSatellite =  L.tileLayer(
        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}{r}?access_token={accessToken}",
        {
          attribution:
-           'Powered by <a href="https://imap.co.ke/">IMAP</a> | Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+           'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 
          id: "mapbox/satellite-v9",
          accessToken:
@@ -250,7 +281,7 @@ const mapboxSatellite =  L.tileLayer(
        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
        {
          attribution:
-           'Powered by <a href="https://imap.co.ke/">IMAP</a> | Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+           'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
          // maxZoom: 18,
          id: "mapbox/streets-v11",
          accessToken:
@@ -258,6 +289,12 @@ const mapboxSatellite =  L.tileLayer(
        }
      );
 
+    
+     baseMaps.value = {
+        OpenStreetMap: osm,
+        MapBox: mapbox,
+        MapBoxSatellite: mapboxSatellite,
+      };
 //sidebar functionality
 const toggle_nav = (e)  => {
       console.log(" toggle_nav ", e.target.id);
@@ -292,11 +329,120 @@ const toggle_nav = (e)  => {
       });
       map.addControl(sidebar.value);
     }
+    const zoom_in = () => {
+      map.setZoom(map.getZoom() + 1);
+    }
+    const zoom_out = () => {
+      map.setZoom(map.getZoom() - 1);
+    }
+
+//switch between base layers
+  //  const wemast_base_layers = () => {
+  //     if (!show_base_layers.value)
+  //       document.getElementById("show_base_layers").style.display = "none";
+  //     if (show_base_layers.value) {
+  //       document.getElementById("show_base_layers").style.display = "block";
+  //       document.getElementById("show_base_layers").style.marginRight = "-4px";
+
+  //       //create the base map list and render
+  //       const base_layers = Object.keys(baseMaps.value);
+  //       let layer_html = `<ul class=base_layer_list>`;
+  //       base_layers.forEach((layer, i) => {
+  //         layer_html += `<li id=base_layer-${layer}>
+  //         <div class=row>
+  //         <div class="col-xs-1" ><input type="radio" name="base_map" id="checkbox-${layer}" ${
+  //           current_top_base_layer.value === layer ? "checked" : ""
+  //         } ></div>
+  //         <div class="col-xs-10 q-ml-sm">
+  //          ${layer} ${
+  //           base_layers.length - 1 != i ? "<hr class=full-width> " : ""
+  //         }
+  //          </div>
+  //         </div>
+  //          </li>`;
+  //       });
+  //       layer_html += `</ul>`;
+  //       document.getElementById("show_base_layers").innerHTML = layer_html;
+
+  //       document
+  //         .getElementById("show_base_layers")
+  //         .addEventListener("mouseleave", (e) => {
+  //           document.getElementById("show_base_layers").style.display = "none";
+  //         });
+  //     }
+
+  //     show_base_layers.value = !show_base_layers.value;
+  //   }
+
+
+  //   const change_base_layer = (id) => {
+  //     current_top_base_layer.value = id;
+  //     const base_map = id.split("-")[1];
+  //     current_top_base_layer.value = base_map;
+  //     console.log("change base map ", base_map);
+  //     const index = Object.keys(baseMaps.value).indexOf(base_map);
+
+  //     let layerControlElement = document.getElementsByClassName(
+  //       "leaflet-control-layers"
+  //     )[0];
+  //     layerControlElement.getElementsByTagName("input")[index].click();
+
+  //     map.eachLayer(function (layer) {
+  //       console.log("layer ", layer);
+  //     });
+  //   }
+
+  //  const AddCustomRightControls = () => {
+  //     const leaflet_controls = L.control({ position: "topright" });
+  //     leaflet_controls.onAdd = () => {
+  //       let div = L.DomUtil.create("div", "WeMAST_zoom");
+  //       div.innerHTML = leaflet_custom_controls;
+  //       return div;
+  //     };
+
+  //     leaflet_controls.addTo(map);
+  //     const right_ctrls = document.querySelector(".WeMAST_leaflet_controls");
+  //     right_ctrls.addEventListener("click", (event) => {
+  //       const id = event.target.id;
+  //       // if (process.env.DEV) console.log("target id ", id);
+  //       if (
+  //         ![
+  //           "wemast_zoom_ctrl_in",
+  //           "wemast_zoom_ctrl_out",
+  //           "wemast_download",
+  //           "wemast_base_layers",
+  //         ].includes(id)
+  //       ) {
+  //         try {
+  //           document.getElementById(`${id}`).style.backgroundColor =
+  //             "steelblue";
+  //         } catch (err) {}
+  //       }
+
+  //       if ([`${id}`]) {
+  //         [id];
+  //       }
+  //       if (id.startsWith("checkbox")) {
+  //         change_base_layer(id);
+  //       }
+  //       if (
+  //         (previous_wemast_ctrl_id.value &&
+  //           previous_wemast_ctrl_id.value != id) ||
+  //         (previous_wemast_ctrl_id.value && previous_wemast_ctrl_id.value === id)
+  //       ) {
+  //         document.getElementById(
+  //           previous_wemast_ctrl_id.value
+  //         ).style.backgroundColor = "white";
+  //       }
+
+  //       previous_wemast_ctrl_id.value = id;
+  //     });
+  //   }
 //hooks
 onMounted( () => {
   map = L.map("map", {
         zoomControl: false,
-        // layersControl: false,
+        layersControl: false,
         center: [0.02, 37.8582273],
         // minZoom: 6.5,
         // maxZoom: 20,
@@ -306,124 +452,39 @@ onMounted( () => {
         layers: mapboxSatellite
       }); // add the basemaps to the controls
 
+      // L.control.layers(baseMaps.value).addTo(map);
+
+    // current_top_base_layer.value = "MapBoxSatellite";
+    // AddCustomRightControls()
+
        //add sidebar
        AddSideLeafletSideBar();
 
 closeNav();
+
+// document
+//       .getElementById("wemast_base_layers")
+//       .addEventListener("mouseover", (e) => {
+//         console.log("mouseover ");
+//         show_base_layers.value = true;
+//         wemast_base_layers();
+//       });
+
+    // this.addDrawCtrl(); //adds draw control to map
+    // this.wemast_draw(); //hides draw controls
+
+    // map.on("baselayerchange", (e) => {
+    //   console.log("Layer in basechange ", current_raster_layer.value);
+    //   if (current_raster_layer.value) {
+    //     current_raster_layer.value.bringToFront(); //current_raster can be tracked and brought to front
+    //   }
+    // });
 })
 
 </script>
 
 <style scoped>
-  .app{
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  }
-  .navbar{
-    position: absolute;
-    top: 3vh;
-    left: -0.3vw;
-  }
-  .selections{
-    position: absolute;
-    top: 7vh;
-    left: -0.3vw;
-  }
-  #map{
-    position: absolute;
-    top: 24vh;
-    left:-0.3vw;
-    width: 99vw;
-    height: 75vh;
-  }
-
-
-  /* side nav */
-  .toggle_icon{
-    position: absolute;
-    top: 4vh;
-    left: -0.2vw;
-    padding: 5px;
-    background-color: #fff;
-    border-radius: 50%;
-  }
-.sidenav {
-  height: 100%;
-  position: fixed;
-  z-index: 3000;
-  top: 90px;
-  right: 0;
-  caret-color: transparent;
-  background-color:#fff;
-}
-#mySidenav {
-  transition: width 0.3s;
-}
-.sidenav_body {
-  height: 90%;
-
-  margin-left: 20px;
-  overflow-y: scroll;
-  position: relative;
-  scrollbar-width: thin;
-  scrollbar-color: steelblue white;
-}
-.sidenav_body::-webkit-scrollbar {
-  width: 5px;
-}
-.sidenav_body::-webkit-scrollbar-track {
-  background: white; /* color of the tracking area */
-}
-
-.sidenav_body::-webkit-scrollbar-thumb {
-  background-color: steelblue; /* color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 1px solid rgb(224, 213, 193); /* creates padding around scroll thumb */
-}
-.protrusion {
-  top: 110px;
-  position: absolute;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-}
-#close {
-  margin-top: 9px;
-  margin-left: 8px;
-}
-#open {
-  margin-top: 9px;
-  margin-left: 8px;
-  transform: rotate(180deg);
-}
-@media screen and (max-height: 800px) {
-  .logos_container {
-    margin-bottom: 25px;
-    margin-top: 10px;
-  }
-}
-@media screen and (min-height: 901px) {
-  .logos_container {
-    position: absolute;
-    bottom: 0;
-    margin-left: 25%;
-  }
-}
-#mapContainer >>> .base_layer_list {
-  list-style: none;
-  font-size: 15px;
-  padding: 5px;
-}
-.side_nav_swap {
-  color: #1481c3;
-  border-bottom: solid 3px #1481c3;
-  padding-bottom: 6px;
-  font-weight: bolder;
-  font-size: 18px;
-}
-
+  @import "./assets/main.css";
+  
 
 </style>
