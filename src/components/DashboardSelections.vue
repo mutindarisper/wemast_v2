@@ -33,13 +33,13 @@
 
 <style scoped>
     .selections{
-        background-color: #ccc;
-        width: 100vw;
+        background-color: #ddd;
+        width: 99.3vw;
         height: 10vh;
     }
     .select_country{ 
   position: absolute;
-  top: 1vh;
+  top: 0.3vh;
   left: 0.8vw;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: bold;
@@ -56,7 +56,7 @@
 
 .select_cause{ 
   position: absolute;
-  top: 1vh;
+  top: 0.3vh;
   left: 10vw;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: bold;
@@ -74,7 +74,7 @@
 
 .select_sub-indicator{ 
   position: absolute;
-  top: 1vh;
+  top: 0.3vh;
   left: 20vw;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: bold;
@@ -93,7 +93,7 @@
 
 .select_year{ 
   position: absolute;
-  top: 1vh;
+  top: 0.3vh;
   left: 30vw;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: bold;

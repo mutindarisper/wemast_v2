@@ -4,8 +4,9 @@
             <img class="sasscal" src="../assets/logos/SASSCAL.png" alt="">
       
         <div class="project_title">
-            WETLAND MONITORING AND ASSESSMENT FOR TRANSBOUNDARY BASINS IN SOUTHERN
-          AFRICA
+
+           <span class="project_title1">WETLAND MONITORING AND ASSESSMENT FOR TRANSBOUNDARY BASINS IN SOUTHERN
+          AFRICA</span> 
           <br>
           <span class="wemast_span" style="color:steelblue;font-weight:bold">(WeMAST)</span>
         </div>
@@ -62,9 +63,13 @@
     top:-1.5vh;
     left:8vw ;
   margin-top: 25px;
-  font-size: 13px;
-  font-weight: bold;
+ 
   
+}
+.project_title1{
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .partners_logos{
     position: absolute;
