@@ -90,7 +90,7 @@
     top:.8vh;
     left:32vw ;
     width:80px;
-  height: 55px;
+  height: 45px;
   
 }
 
@@ -112,10 +112,6 @@
     width: 36px;
 }
 
-.dashboard{
-    /* height: 100px;
-    width: 160px; */
-    /* background-color: aquamarine; */
-}
+
 
 </style>
