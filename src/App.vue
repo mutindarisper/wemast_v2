@@ -14,17 +14,38 @@
         <span id="image-opacity"> </span>
         <input type="range" id="sldOpacity" min="0" max="1" step="0.1" value="1" />
        </div>
-      <div class="map_controls">
+       <!-- map controls to be returned if need be -->
+      <!-- <div class="map_controls"> 
     
        <img  title="Download tif" id="map_icons" src="./assets/mapIcons/download_tif.svg" alt="" class="download_tiff">
        <img title="Download Map" id="map_icons" src="./assets/mapIcons/download_map.svg" alt="" class="download_map">
        <img title="Measure Distance" id="map_icons" src="./assets/mapIcons/ruler.svg" alt="" class="measure">
-       <img title="" id="map_icons" src="./assets/mapIcons/layers-24px.svg" alt="" class="layers">
+       <img title="" id="map_icons" src="./assets/mapIcons/layers-24px.svg" alt="" class="layers"
+        @mouseover="base_map_ctrl_selections = true"
+        @mouseleave="handle_baseLayers">
        <img title="Draw Polygon" id="map_icons" src="./assets/mapIcons/square.svg" alt="" class="draw_polygon">
        <img title="Zoom in" id="map_icons" src="./assets/mapIcons/add-24px.svg" alt="" class="zoom_in" @click="zoom_in">
        <img title="Zoom out" id="map_icons" src="./assets/mapIcons/remove-24px.svg" alt="" class="zoom_out" @click="zoom_out">
-       <img  title="Help" id="map_icons" src="./assets/mapIcons/help.svg" alt="" class="help">
-      </div>
+       <img title="Help" id="map_icons" src="./assets/mapIcons/help.svg" alt="" class="help">
+      </div> -->
+
+      
+      <!-- <div
+        class="base_map_ctrl_selections"
+        v-if="base_map_ctrl_selections"
+        @mouseover="
+          (base_map_ctrl_selections = true), (base_map_ctrl_cliked = true)
+        "
+        @mouseleave="
+          (base_map_ctrl_selections = false), (base_map_ctrl_cliked = false)
+        "
+      >
+        <div v-for="base_map in Object.keys(baseMaps)" :key="base_map">
+          <div class="base_map" @click="change_base_map(base_map)">
+            <div class="base_map_name">{{ base_map }}</div>
+          </div>
+        </div>
+      </div> -->
 
     </div>
 
@@ -94,7 +115,7 @@
             <!-- <q-btn flat label="get WMS" @click="getWMS_Layer" />    -->
 
             <p style="margin-top:40px">
-              <Label style="margin-top:40px; font-weight: 700;">Summary</Label>
+              <label style="margin-top:40px; font-weight: 700;">Summary</label>
               <br>
               {{ summary_text }}
             </p>
@@ -250,6 +271,8 @@ let summary_text =  ` Land use land cover maps monitor the land use in a specifi
       its sustainability.`
 let show_base_layers = ref(true)
 let baseMaps =ref({}) 
+let base_map_ctrl_selections= ref(false) //show or hide base layers
+let base_map_ctrl_cliked = ref(false)
 let current_top_base_layer= ref(null) //holds the current later at the top
 let previous_wemast_ctrl_id = ref(null)  //holds the id of the element clicked  prevously
 let current_raster_layer = ref(null) //holds curren requested layer geoserver
@@ -290,11 +313,11 @@ const mapboxSatellite =  L.tileLayer(
      );
 
     
-     baseMaps.value = {
-        OpenStreetMap: osm,
-        MapBox: mapbox,
-        MapBoxSatellite: mapboxSatellite,
-      };
+    //  baseMaps.value = {
+    //     OpenStreetMap: osm,
+    //     MapBox: mapbox,
+    //     MapBoxSatellite: mapboxSatellite,
+    //   };
 //sidebar functionality
 const toggle_nav = (e)  => {
       console.log(" toggle_nav ", e.target.id);
@@ -336,110 +359,132 @@ const toggle_nav = (e)  => {
       map.setZoom(map.getZoom() - 1);
     }
 
+    const handle_baseLayers = () =>{
+      setTimeout(() => {
+        if (base_map_ctrl_cliked.value === false)
+          base_map_ctrl_selections.value = false;
+      }, 500);
+    }
+    const change_base_map = (base_map) => {
+      const index = Object.keys(baseMaps.value).indexOf(base_map);
+
+      let layerControlElement = document.getElementsByClassName(
+        "leaflet-control-layers"
+      )[0];
+      layerControlElement.getElementsByTagName("input")[index].click();
+    }
+
 //switch between base layers
-  //  const wemast_base_layers = () => {
-  //     if (!show_base_layers.value)
-  //       document.getElementById("show_base_layers").style.display = "none";
-  //     if (show_base_layers.value) {
-  //       document.getElementById("show_base_layers").style.display = "block";
-  //       document.getElementById("show_base_layers").style.marginRight = "-4px";
+   const wemast_base_layers = () => {
+      if (!show_base_layers.value)
+        document.getElementById("show_base_layers").style.display = "none";
+      if (show_base_layers.value) {
+        document.getElementById("show_base_layers").style.display = "block";
+        document.getElementById("show_base_layers").style.marginRight = "-4px";
 
-  //       //create the base map list and render
-  //       const base_layers = Object.keys(baseMaps.value);
-  //       let layer_html = `<ul class=base_layer_list>`;
-  //       base_layers.forEach((layer, i) => {
-  //         layer_html += `<li id=base_layer-${layer}>
-  //         <div class=row>
-  //         <div class="col-xs-1" ><input type="radio" name="base_map" id="checkbox-${layer}" ${
-  //           current_top_base_layer.value === layer ? "checked" : ""
-  //         } ></div>
-  //         <div class="col-xs-10 q-ml-sm">
-  //          ${layer} ${
-  //           base_layers.length - 1 != i ? "<hr class=full-width> " : ""
-  //         }
-  //          </div>
-  //         </div>
-  //          </li>`;
-  //       });
-  //       layer_html += `</ul>`;
-  //       document.getElementById("show_base_layers").innerHTML = layer_html;
+        //create the base map list and render
+        const base_layers = Object.keys(baseMaps.value);
+        let layer_html = `<ul class=base_layer_list>`;
+        base_layers.forEach((layer, i) => {
+          layer_html += `<li id=base_layer-${layer}>
+          <div class=base_map>
+          <div class="base_map_name" ><input type="radio" name="base_map" id="checkbox-${layer}" ${
+            current_top_base_layer.value === layer ? "checked" : ""
+          } ></div>
+          <div class="col-xs-10 q-ml-sm">
+           ${layer} ${
+            base_layers.length - 1 != i ? "<hr class=full-width> <br> " : ""
+          }
+           </div>
+          </div>
+           </li>`;
+        });
+        layer_html += `</ul>`;
+        document.getElementById("show_base_layers").innerHTML = layer_html;
 
-  //       document
-  //         .getElementById("show_base_layers")
-  //         .addEventListener("mouseleave", (e) => {
-  //           document.getElementById("show_base_layers").style.display = "none";
-  //         });
-  //     }
+        document
+          .getElementById("show_base_layers")
+          .addEventListener("mouseleave", (e) => {
+            document.getElementById("show_base_layers").style.display = "none";
+          });
+      }
 
-  //     show_base_layers.value = !show_base_layers.value;
-  //   }
+      show_base_layers.value = !show_base_layers.value;
+    }
 
 
-  //   const change_base_layer = (id) => {
-  //     current_top_base_layer.value = id;
-  //     const base_map = id.split("-")[1];
-  //     current_top_base_layer.value = base_map;
-  //     console.log("change base map ", base_map);
-  //     const index = Object.keys(baseMaps.value).indexOf(base_map);
+    const change_base_layer = (id) => {
+      current_top_base_layer.value = id;
+      const base_map = id.split("-")[1];
+      current_top_base_layer.value = base_map;
+      console.log("change base map ", base_map);
+      const index = Object.keys(baseMaps.value).indexOf(base_map);
 
-  //     let layerControlElement = document.getElementsByClassName(
-  //       "leaflet-control-layers"
-  //     )[0];
-  //     layerControlElement.getElementsByTagName("input")[index].click();
+      let layerControlElement = document.getElementsByClassName(
+        "leaflet-control-layers"
+      )[0];
+      layerControlElement.getElementsByTagName("input")[index].click();
 
-  //     map.eachLayer(function (layer) {
-  //       console.log("layer ", layer);
-  //     });
-  //   }
+      map.eachLayer(function (layer) {
+        console.log("layer ", layer);
+      });
+    }
 
-  //  const AddCustomRightControls = () => {
-  //     const leaflet_controls = L.control({ position: "topright" });
-  //     leaflet_controls.onAdd = () => {
-  //       let div = L.DomUtil.create("div", "WeMAST_zoom");
-  //       div.innerHTML = leaflet_custom_controls;
-  //       return div;
-  //     };
+   const AddCustomRightControls = () => {
+      const leaflet_controls = L.control({ position: "topright" });
+      leaflet_controls.onAdd = () => {
+        let div = L.DomUtil.create("div", "WeMAST_zoom");
+        div.innerHTML = leaflet_custom_controls;
+        return div;
+      };
 
-  //     leaflet_controls.addTo(map);
-  //     const right_ctrls = document.querySelector(".WeMAST_leaflet_controls");
-  //     right_ctrls.addEventListener("click", (event) => {
-  //       const id = event.target.id;
-  //       // if (process.env.DEV) console.log("target id ", id);
-  //       if (
-  //         ![
-  //           "wemast_zoom_ctrl_in",
-  //           "wemast_zoom_ctrl_out",
-  //           "wemast_download",
-  //           "wemast_base_layers",
-  //         ].includes(id)
-  //       ) {
-  //         try {
-  //           document.getElementById(`${id}`).style.backgroundColor =
-  //             "steelblue";
-  //         } catch (err) {}
-  //       }
+      leaflet_controls.addTo(map);
+      const right_ctrls = document.querySelector(".map_controls");
+      right_ctrls.addEventListener("click", (event) => {
+        const id = event.target.id;
+        // if (process.env.DEV) console.log("target id ", id);
+        if (
+          ![
+            "zoom_in",
+            "zoom_out",
+            "download_map",
+            'download_tiff',
+            "wemast_base_layers",
+          ].includes(id)
+        ) {
+          try {
+            document.getElementById(`${id}`).style.backgroundColor =
+              "steelblue";
+          } catch (err) {}
+        }
 
-  //       if ([`${id}`]) {
-  //         [id];
-  //       }
-  //       if (id.startsWith("checkbox")) {
-  //         change_base_layer(id);
-  //       }
-  //       if (
-  //         (previous_wemast_ctrl_id.value &&
-  //           previous_wemast_ctrl_id.value != id) ||
-  //         (previous_wemast_ctrl_id.value && previous_wemast_ctrl_id.value === id)
-  //       ) {
-  //         document.getElementById(
-  //           previous_wemast_ctrl_id.value
-  //         ).style.backgroundColor = "white";
-  //       }
+        if ([`${id}`]) {
+          [id];
+        }
+        if (id.startsWith("checkbox")) {
+          change_base_layer(id);
+        }
+        if (
+          (previous_wemast_ctrl_id.value &&
+            previous_wemast_ctrl_id.value != id) ||
+          (previous_wemast_ctrl_id.value && previous_wemast_ctrl_id.value === id)
+        ) {
+          document.getElementById(
+            previous_wemast_ctrl_id.value
+          ).style.backgroundColor = "white";
+        }
 
-  //       previous_wemast_ctrl_id.value = id;
-  //     });
-  //   }
+        previous_wemast_ctrl_id.value = id;
+      });
+    }
 //hooks
 onMounted( () => {
+
+  baseMaps.value = {
+        OpenStreetMap: osm,
+        MapBox: mapbox,
+        MapBoxSatellite: mapboxSatellite,
+      };
   map = L.map("map", {
         zoomControl: false,
         layersControl: false,
@@ -449,26 +494,31 @@ onMounted( () => {
         zoom: 6,
         // measureControl: true,
         // defaultExtentControl: true,
-        layers: mapboxSatellite
+        layers: [mapboxSatellite]
       }); // add the basemaps to the controls
 
-      // L.control.layers(baseMaps.value).addTo(map);
+      L.control.layers(baseMaps.value).addTo(map);
+       ///////////////////hide layers control
+      //  var layerControl = document.getElementsByClassName(
+      //   "leaflet-control-layers"
+      // );
+      // layerControl[0].style.visibility = "hidden";
 
-    // current_top_base_layer.value = "MapBoxSatellite";
-    // AddCustomRightControls()
+    current_top_base_layer.value = "MapBoxSatellite";
+    AddCustomRightControls()
 
        //add sidebar
        AddSideLeafletSideBar();
 
 closeNav();
 
-// document
-//       .getElementById("wemast_base_layers")
-//       .addEventListener("mouseover", (e) => {
-//         console.log("mouseover ");
-//         show_base_layers.value = true;
-//         wemast_base_layers();
-//       });
+document
+      .getElementById("wemast_base_layers")
+      .addEventListener("mouseover", (e) => {
+        console.log("mouseover ");
+        show_base_layers.value = true;
+        wemast_base_layers();
+      });
 
     // this.addDrawCtrl(); //adds draw control to map
     // this.wemast_draw(); //hides draw controls

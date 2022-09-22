@@ -167,6 +167,11 @@ table {
   background-color: #fff;
   cursor: pointer;
 }
+/* wemast_base_layers
+draw_polygon
+zoom_in
+zoom_out
+help */
 .opacity{
   z-index: 500;
   position: absolute;
@@ -219,4 +224,98 @@ color: #000;
   /* overflow: visible; */
   cursor: pointer;
 }
+.base_map_ctrl_selections {
+  position: absolute;
+  z-index: 401;
+  /* margin-top: 5%; */
+  top: 2vh;
+  left:82.1vw;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 5px;
+  
+}
+/* .base_map_name {
+  font-size: 15px;
+  cursor: pointer;
+  border-bottom: #080808 solid 3px;
+}
+.base_map_name:hover {
+  background-color: #858585;
+} */
+/* .layers:hover{
+  color:#fff;
+  background-color:#333333;
 
+  -webkit-transform: translateX(20px); 
+  -moz-transform: translateX(20px); 
+  -ms-transform: translateX(20px); 
+  -o-transform: translateX(20px); 
+  transform: translateX(20px); .download_tiff, .download_map,
+} */
+.layers:hover ~ #opacity {
+  background: #801113;
+  /* -webkit-transform: translateX(120px); 
+  -moz-transform: translateX(120px); 
+  -ms-transform: translateX(120px); 
+  -o-transform: translateX(120px); 
+  transform: translateX(120px);  */
+}
+
+/* #wemast_base_layers {
+  margin-top: 0.9px;
+} */
+#map >>> .leaflet-control-layers {
+  display: none;
+  /* position: absolute;
+  top:80;
+  right:190px */
+}#map >>> .map_controls {
+  font-size: 30px;
+  position: sticky;
+  top: 40%;
+}
+#map >>> .map_controls img {
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* background-color: rgb(155, 34, 34); */
+  height: 20px;
+  width:20px;
+  /* padding: 3px; */
+  background-color: #fff;
+  cursor: pointer;
+}
+.base_layer_list{
+  list-style-type: none;
+  /* margin-left: -50px; */
+  /* background-color: aqua; */
+  font-size: 14px;
+  /* background-color: #f59211; */
+  margin-top: 25px;
+  height: 164.7px;
+}
+.base_map_name{
+  /* background-color: aqua; */
+  margin-left: -30px;
+  margin-top: -15px;
+}
+/* aka basemapnames */
+/* .vvv{
+  margin-right: -15px;
+  margin-top: -15px;
+} */
+/* #base_layer-MapBox, #base_layer-OpenStreetMap, #base_layer-MapBoxSatellite{
+color: rgb(212, 19, 230);
+
+}
+#checkbox-MapBox, #checkbox-OpenStreetMap, #checkbox-MapBoxSatellite{
+   margin-top: -15px;
+  
+  } */
+
+.col-xs-10.q-ml-sm {
+  margin-top: -23px;
+  padding: 0;
+}
