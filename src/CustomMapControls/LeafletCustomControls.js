@@ -5,12 +5,12 @@ export const leaflet_custom_controls =
 <img  title="Download tif" id="download_tiff" src="src/assets/mapIcons/download_tif.svg" alt="" class="download_tiff">
 <img title="Download Map" id="download_map" src="src/assets/mapIcons/download_map.svg" alt="" class="download_map">
 <img title="Measure Distance" id="measure" src="src/assets/mapIcons/ruler.svg" alt="" class="measure">
-<div  id="show_base_layers" class="  " style="display:none;background-color:white; height:150px; width:150px; padding-right:10px;  ">
+<div  id="show_base_layers" class="  " style="display:none;background-color:white; height:130px; width:150px; padding-right:10px;  ">
  
 </div>
 <img title="" id="wemast_base_layers" src="src/assets/mapIcons/layers-24px.svg" alt="" class="wemast_base_layers">
 <img title="Draw Polygon" id="draw_polygon" src="src/assets/mapIcons/square.svg" alt="" class="draw_polygon">
-<img title="Zoom in" id="zoom_in" src="src/assets/mapIcons/add-24px.svg" alt="" class="zoom_in">
+<img title="Zoom in" id="zoom_in" src="src/assets/mapIcons/add-24px.svg" alt="" class="zoom_in" >
 <img title="Zoom out" id="zoom_out" src="src/assets/mapIcons/remove-24px.svg" alt="" class="zoom_out" >
 <img title="Help" id="help" src="src/assets/mapIcons/help.svg" alt="" class="help">
 </div>`;

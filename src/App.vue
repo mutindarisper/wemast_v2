@@ -250,6 +250,11 @@ import "leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-sidebar-v2";
+import "leaflet/dist/leaflet.css";
+import "leaflet-draw/dist/leaflet.draw-src.css";
+import "leaflet-draw";
+
+// import "leaflet-draw/dist/leaflet.draw";
 import SideBarView from "./views/SideBarView.vue"
 import { close_nav, open_nav } from "./Helpers/SideNavControls";
 import { leaflet_custom_controls } from "./CustomMapControls/LeafletCustomControls"
@@ -276,6 +281,9 @@ let base_map_ctrl_cliked = ref(false)
 let current_top_base_layer= ref(null) //holds the current later at the top
 let previous_wemast_ctrl_id = ref(null)  //holds the id of the element clicked  prevously
 let current_raster_layer = ref(null) //holds curren requested layer geoserver
+let show_draw_control= ref(false) //toggles draw control visibility
+let editableLayers = ref(null) //draw control
+window.type = true;
 
 
 //variables
@@ -372,6 +380,68 @@ const toggle_nav = (e)  => {
         "leaflet-control-layers"
       )[0];
       layerControlElement.getElementsByTagName("input")[index].click();
+    }
+    //draw control
+    const draw_polygon = () => {
+      if (!show_draw_control.value) {
+        const draw_ctrl = document.getElementsByClassName("leaflet-draw");
+        draw_ctrl[0].style.visibility = "hidden";
+      } else {
+        const draw_ctrl = document.getElementsByClassName("leaflet-draw");
+        draw_ctrl[0].style.visibility = "visible";
+      }
+      show_draw_control.value = !show_draw_control.value;
+    }
+
+   const addDrawCtrl = () => {
+      //we add the polygon draw feature to map as seen  below
+      editableLayers.value = new L.FeatureGroup();
+      map.addLayer(editableLayers.value);
+      let options = {
+        position: "topright",
+        draw: {
+          polyline: false,
+          polygon: {
+            allowIntersection: false, // Restricts shapes to simple polygons
+            showArea: true,
+            drawError: {
+              color: "#e1e100", // Color the shape will turn when intersects
+              message: "<strong>Oh snap!<strong> you can't draw that!", // Message that will show when intersect
+            },
+            shapeOptions: {
+              color: "black",
+              fillColor: "none",
+            },
+          },
+          circle: false, // Turns off this drawing tool
+          rectangle: false,
+          marker: false,
+          circlemarker: false,
+        },
+        edit: {
+          featureGroup: editableLayers.value, //REQUIRED!!
+          edit: {},
+        },
+      };
+      let drawControl = new L.Control.Draw(options);
+      map.addControl(drawControl);
+
+      map.on(L.Draw.Event.CREATED, (e) => {
+        const layer = e.layer;
+        editableLayers.value.addLayer(layer);
+        // if (process.env.DEV)
+        //   console.log(JSON.stringify(layer.toGeoJSON().geometry));
+      });
+
+    map.on(L.Draw.Event.EDITSTOP, (e) => {
+        // if (process.env.DEV) console.log("stop edit", e);
+      });
+      map.on(L.Draw.Event.DELETED, (e) => {
+        // if (process.env.DEV) console.log(" deleted ", e);
+        //remove the control from map and remove focus on the draw icon by changing color
+        draw_polygon();
+        document.getElementById("draw_polygon").style.backgroundColor = "white";
+      });
     }
 
 //switch between base layers
@@ -518,10 +588,37 @@ document
         console.log("mouseover ");
         show_base_layers.value = true;
         wemast_base_layers();
+      })
+
+      document
+      .getElementById("zoom_in")
+      .addEventListener("click", (e) => {
+        console.log("click ");
+        
+        zoom_in();
       });
 
-    // this.addDrawCtrl(); //adds draw control to map
-    // this.wemast_draw(); //hides draw controls
+      document
+      .getElementById("zoom_out")
+      .addEventListener("click", (e) => {
+        console.log("click ");
+        
+        zoom_out();
+      });
+
+      document
+      .getElementById("draw_polygon")
+      .addEventListener("click", (e) => {
+        console.log("click ");
+        
+        addDrawCtrl();
+        // draw_polygon();
+      });
+
+      
+
+    // addDrawCtrl(); //adds draw control to map
+    draw_polygon(); //hides draw controls
 
     // map.on("baselayerchange", (e) => {
     //   console.log("Layer in basechange ", current_raster_layer.value);
