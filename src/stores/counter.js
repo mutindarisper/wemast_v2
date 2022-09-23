@@ -112,7 +112,7 @@ export const useCounterStore = defineStore({
     },
 
     fetchCountriesList() {
-      this.countries = ['Kiambu', 'Laikipia', 'Meru', 'Embu', 'Nyeri']
+      this.countries =  ["Limpopo","Cuvelai","Zambezi", "Okavango"]
 
     },
 

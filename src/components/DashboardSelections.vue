@@ -1,24 +1,31 @@
 <template>
     <div class="selections">
         <p class="select_country">Select Region</p>
-        <select name="" id="region_selection">
+        <!-- <select name="" id="region_selection">
             <option value=""></option>
-        </select>
+        </select> -->
+        <div id="region_selection">
+          <CustomSelect2
+       
+        
+       />
+        </div>
+       
 
         <p class="select_cause">Select Indicator</p>
-        <select name="" id="cause_selection">
-            <option value=""></option>
-        </select>
+        <div id="cause_selection">
+          <CustomSelectIndicator />
+        </div>
 
         <p class="select_sub-indicator">Select Sub-Indicator</p>
-        <select name="" id="sub_indicator_selection">
-            <option value=""></option>
-        </select>
+        <div id="sub_indicator_selection">
+            <CustomSelectSubIndicator />
+        </div>
 
         <p class="select_year">Select Year</p>
-        <select name="" id="year_selection">
-            <option value=""></option>
-        </select>
+        <div id="year_selection">
+            <CustomSelectYear />
+        </div>
 
         <button class="request" type="button">REQUEST</button>
         
@@ -28,6 +35,17 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue';
+import CustomSelect from './CustomSelect.vue';
+import {useCounterStore } from '../stores/counter';
+import CustomSelect2 from './CustomSelect2.vue';
+import CustomSelectIndicator from './CustomSelectIndicator.vue';
+import CustomSelectSubIndicator from './CustomSelectSubIndicator.vue'
+import CustomSelectYear from './CustomSelectYear.vue'
+
+// let counties = ref(['Limpopo', 'Cuvelai', 'Okavango', 'Zambezi'])
+
+const storeUserSelections = useCounterStore()
 
 </script>
 
@@ -36,6 +54,7 @@
         background-color: #ddd;
         width: 99.3vw;
         height: 10vh;
+        z-index: 2000;
     }
     .select_country{ 
   position: absolute;

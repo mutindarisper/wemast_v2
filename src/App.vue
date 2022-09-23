@@ -575,7 +575,7 @@ onMounted( () => {
       // layerControl[0].style.visibility = "hidden";
 
     current_top_base_layer.value = "MapBoxSatellite";
-    AddCustomRightControls()
+    AddCustomRightControls();
 
        //add sidebar
        AddSideLeafletSideBar();
