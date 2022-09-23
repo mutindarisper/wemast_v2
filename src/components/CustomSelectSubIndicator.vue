@@ -25,8 +25,8 @@
 
 
           let placeholder = ref('Land Cover')
-          let list = ['Land Cover', 'Vegetation Cover', "Wetland Inventory"]
-          console.log(list, 'regions list')
+        //   let list = ['Land Cover', 'Vegetation Cover', "Wetland Inventory"]
+        //   console.log(list, 'regions list')
           let visible = ref(false)
   
       
@@ -51,10 +51,12 @@ left:-0.52vw;
       .selector {
           border: 1px solid rgb(114, 113, 113);
           background: #F8F8F8;
+          /* padding-left: 2px; */
+          /* padding-right: 5px; */
           position: relative;
           z-index: 1;
           height: 35px;
-width: 140px;
+width: 180px;
 border-radius: 30px;
 cursor: pointer;
       }

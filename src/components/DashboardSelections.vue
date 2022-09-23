@@ -10,9 +10,19 @@
         
        />
         </div>
-       
 
-        <p class="select_cause">Select Indicator</p>
+        <!-- <select name="" id="country_selection" @click="storeUserSelections.fetchCountriesList"
+     @input="storeUserSelections.showSelectedCountry"
+      placeholder="Select Region"
+     >
+
+     <option>{{ storeUserSelections.placeholder}}</option>
+  
+     <option v-for="country in storeUserSelections.countries" :key="country">{{ country}}</option>
+   </select>
+        -->
+
+        <!-- <p class="select_cause">Select Indicator</p>
         <div id="cause_selection">
           <CustomSelectIndicator />
         </div>
@@ -25,7 +35,7 @@
         <p class="select_year">Select Year</p>
         <div id="year_selection">
             <CustomSelectYear />
-        </div>
+        </div> -->
 
         <button class="request" type="button">REQUEST</button>
         
@@ -113,7 +123,7 @@ const storeUserSelections = useCounterStore()
 .select_year{ 
   position: absolute;
   top: 0.3vh;
-  left: 30vw;
+  left: 32vw;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-weight: bold;
 }
@@ -121,7 +131,7 @@ const storeUserSelections = useCounterStore()
 #year_selection{
   position: absolute;
   top: 4vh;
-  left: 30vw;
+  left: 32vw;
   height: 35px;
   width: 140px;
   border-radius: 30px;

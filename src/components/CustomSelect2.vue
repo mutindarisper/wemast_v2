@@ -1,6 +1,6 @@
 <template>
-      <div class="aselect" :data-value="placeholder" :data-list="list">
-	    <div class="selector" @click="toggle()">
+      <div class="aselect" :data-value="placeholder" >
+	    <div    class="selector" @click="toggle()" >
 	        <div class="label">
 				    <span>{{ placeholder }}</span>
 	        </div>
@@ -9,34 +9,72 @@
 	        <div :class="{ hidden : !visible, visible }">
 	            <ul>
     
-	                <li :class="{ current : item === placeholder }" v-for="item in list" :key="item" @click="select(item)">{{ item }}</li>
+	                <li :class="{ current : item === placeholder }" v-for="item in storeUserSelections.countries" :key="item" @click="select(item)"   @input="storeUserSelections.showSelectedCountry">{{ item }}</li>
                     
 	            </ul>
 	        </div>
-	    </div>
+	    </div> 
+		<!-- select end -->
 	</div>
+
+	
+	
   
 </template>
 
 <script setup>
-    import { ref} from 'vue'
+    import { ref, computed, watch, onMounted} from 'vue'
     import {useCounterStore } from '../stores/counter';
-    const storeUserSelections = useCounterStore()
+	import axios from 'axios';
+    const storeUserSelections = useCounterStore();
 
 
 			let placeholder = ref('Cuvelai')
-			let list = ["Limpopo","Cuvelai","Zambezi", "Okavango"]
-            console.log(list, 'regions list')
+			// let list = ["Limpopo","Cuvelai","Zambezi", "Okavango", 'pogba']
+            // console.log(list, 'regions list')
+			let counties = ref([])
             let visible = ref(false)
+			var baseurl = 'http://45.63.48.25:8080'
+			let current_geojson = ref({})
 	
 		
 			const toggle = () => {
 				visible.value = !visible.value;
+				storeUserSelections.fetchCountriesList()
+				
+				// console.log(storeUserSelections.fetchCountriesList)
+				
             }
-			const select = (option) =>{
+			const select =  (option) =>{
 			    placeholder.value = option;
+				console.log(option, 'selected option ')
+				storeUserSelections.showSelectedCountry
+
+
+		// 		try{
+		// 			console.log(option, 'option inside')
+
+		// 		const resp = axios.get(baseurl+'/AdminData/get_adm1_shapefile?Get_county='+option
+        //       );
+              
+
+        //     //   current_geojson.value = resp.data
+        //       console.log(resp.data, 'await response data');
+        //     //   this.loading = false;
+        //     //   this.crs = resp.data.crs.properties.name
+        //     //   console.log(this.crs, 'crs')
+        //       return resp.data
+        //   } catch (err) {
+        //       // Handle Error Here
+        //       console.error('an error occured'+err);
+        //   }
+				// storeUserSelections.showSelectedCountry
 			}
+
 		
+
+				
+				
 
 </script>
 
@@ -50,7 +88,7 @@
 }
 		.selector {
 			border: 1px solid rgb(114, 113, 113);
-			background: #F8F8F8;
+			background: #fff;
 			position: relative;
 			z-index: 1;
             height: 35px;

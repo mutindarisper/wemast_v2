@@ -8,6 +8,8 @@
       <DashboardSelections />
     </div>
 
+    <!-- <h1 class="header_countries">{{storeUserSelections.indicator_list}}</h1> -->
+
     <div id="map">
       <div class="opacity">
         <span id="opacity">Opacity:</span>
@@ -284,10 +286,14 @@ let current_raster_layer = ref(null) //holds curren requested layer geoserver
 let show_draw_control= ref(false) //toggles draw control visibility
 let editableLayers = ref(null) //draw control
 window.type = true;
+var current_geojson = ref(null)
 
 
 //variables
 const storeUserSelections = useCounterStore()
+
+console.log(storeUserSelections.fetchCountriesList)
+
 let osm = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -628,6 +634,39 @@ document
     // });
 })
 
+
+    //function to get regions 
+
+    const getRegion = () => {  
+ 
+ // loading = true
+ // console.log(loading.value, 'loading')
+//  if(kiambu)map.removeLayer(kiambu)
+//  if(kiambu_points.value)map.removeLayer(kiambu_points.value)
+ if(current_geojson.value)map.removeLayer(current_geojson.value)
+//  if(current_point_geojson.value)map.removeLayer(current_point_geojson.value)
+
+ var selecteRegion = storeUserSelections.getSelectedRegion
+ // loading = storeUserSelections.getLoadingState
+
+ // console.log(region)
+ current_geojson.value = L.geoJSON(selecteRegion, {
+         style: {
+           color: "black",
+           opacity: 0.3
+         },
+         pane: 'right'
+          })
+ 
+
+ current_geojson.value.addTo(map)
+// loading = false
+
+           map.fitBounds(current_geojson.value.getBounds(), {
+                           padding: [50, 50],
+                         }); 
+ 
+}
 </script>
 
 <style scoped>

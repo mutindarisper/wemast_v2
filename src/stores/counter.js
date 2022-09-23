@@ -102,7 +102,9 @@ export const useCounterStore = defineStore({
       geoserver_regions:[],
       selected_geoserver_region: '',
       current_geoserver_geojson:{},
-      crs:""
+      crs:"",
+      
+      indicator_list: ['hhuiiii','uuyft', 'fffgfh'], //wemast_v2_lists "Limpopo","Cuvelai","Zambezi", "Okavango",'South Africa', 'Kiambu'
 
   }),
  
@@ -112,8 +114,12 @@ export const useCounterStore = defineStore({
     },
 
     fetchCountriesList() {
-      this.countries =  ["Limpopo","Cuvelai","Zambezi", "Okavango"]
+      this.countries =  ["Limpopo","Cuvelai","Zambezi", "Okavango",'South Africa', 'Kiambu','Laikipia']
+      return this.countries
 
+    },
+    fetchIndicatorList(){
+      this.indicator_list = ['Exposure', 'Sensitivity','Resiliance','pogba']
     },
 
     fetchKiambuCounty() {
@@ -480,7 +486,12 @@ export const useCounterStore = defineStore({
     getSelectRaster:(state)=>state.selected_raster,
     //geoserver geojsons
     getSelectedGeoserverRegionName:(state)=>state.selected_geoserver_region,
-    getSelectedGeoserverRegion:(state)=>state.current_geoserver_geojson
+    getSelectedGeoserverRegion:(state)=>state.current_geoserver_geojson,
+    //wemast_v2 lists
+
+    getRegionList:(state)=>state.countries,
+   
+    getIndicatorList:(state)=>state.indicator_list
   
     
   },

@@ -1,5 +1,5 @@
 <template>
-    <div class="aselect" :data-value="placeholder" :data-list="list">
+    <div class="aselect" :data-value="placeholder" :data-list="indicator_list">
       <div class="selector" @click="toggle()">
           <div class="label">
                   <span>{{ placeholder }}</span>
@@ -9,7 +9,7 @@
           <div :class="{ hidden : !visible, visible }">
               <ul>
   
-                  <li :class="{ current : item === placeholder }" v-for="item in list" :key="item" @click="select(item)">{{ item }}</li>
+                  <li :class="{ current : item === placeholder }" v-for="item in indicator_list" :key="item" @click="select(item)">{{ item }}</li>
                   
               </ul>
           </div>
@@ -25,17 +25,20 @@
 
 
           let placeholder = ref('Exposure')
-          let list = ['Exposure', 'Sensitivity','Resiliance']
-          console.log(list, 'regions list')
+        //   let list = ''
+        //   console.log(list, 'regions list')
           let visible = ref(false)
   
-      
+        var indicator_list = storeUserSelections.getIndicatorList
+        console.log(indicator_list, 'indicator list from store')
+
           const toggle = () => {
               visible.value = !visible.value;
           }
           const select = (option) =>{
               placeholder.value = option;
           }
+          
       
 
 </script>
