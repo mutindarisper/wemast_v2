@@ -326,3 +326,14 @@ color: rgb(212, 19, 230);
   top: 10vh;
   left:82.1vw;
 }
+.spinner{
+  position:absolute;
+  top: 57vh;
+  left: 40vw;
+  z-index: 1500;
+  /* background-color: black; */
+  width: 500px;
+  height: 150px;
+  
+
+}

@@ -178,14 +178,14 @@ export const useCounterStore = defineStore({
       if(data) {
         const sendGetRequest = async () => {
           try {
-            // this.loading = true;
+            this.loading = true;
               const resp = await  axios.get(baseurl+'/AdminData/get_adm1_shapefile?Get_county='+data
               );
               
 
               this.current_geojson = resp.data
               console.log(resp.data, 'await response data');
-              // this.loading = false;
+              this.loading = false;
               // this.crs = resp.data.crs.properties.name
               // console.log(this.crs, 'crs')
               return resp.data

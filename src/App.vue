@@ -8,6 +8,11 @@
       <DashboardSelections />
     </div>
 
+
+    <div  class="spinner" v-if="loading">
+            <img src="./assets/uiIcons/loader_white.svg" alt="">
+        </div>
+
     <!-- <h1 class="header_countries">{{storeUserSelections.indicator_list}}</h1> -->
 
     <div id="map">
@@ -287,12 +292,15 @@ let show_draw_control= ref(false) //toggles draw control visibility
 let editableLayers = ref(null) //draw control
 window.type = true;
 var current_geojson = ref(null)
+let loading = ref(false)
 
 
 //variables
 const storeUserSelections = useCounterStore()
 
 console.log(storeUserSelections.fetchCountriesList)
+
+console.log(storeUserSelections.getLoadingState, 'getLoadingState')
 
 let osm = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -639,7 +647,7 @@ document
 
     const getRegion = () => {  
  
- // loading = true
+//  loading = true
  // console.log(loading.value, 'loading')
 //  if(kiambu)map.removeLayer(kiambu)
 //  if(kiambu_points.value)map.removeLayer(kiambu_points.value)
@@ -648,7 +656,7 @@ document
 
  var selecteRegion = storeUserSelections.getSelectedRegion
  console.log(selecteRegion, 'selected region app')
- // loading = storeUserSelections.getLoadingState
+//  loading = storeUserSelections.getLoadingState
 
  // console.log(region)
  current_geojson.value = L.geoJSON(selecteRegion, {
@@ -685,6 +693,20 @@ watch( setSelectedRegion , () => {
   getRegion()
   
 })
+
+
+//watch state for loading
+
+const setLoadingState= computed( () => {
+  return storeUserSelections.getLoadingState
+})
+
+ watch( setLoadingState , () => {
+  console.log(storeUserSelections.getLoadingState, 'getLoadingState')
+  loading.value = storeUserSelections.getLoadingState
+  
+})
+
 </script>
 
 <style scoped>
