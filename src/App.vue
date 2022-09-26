@@ -7,6 +7,11 @@
     <div class="selections">
       <DashboardSelections />
     </div>
+    <div class="advanced_filter" @click="show_advanced_filter" >
+      <p>Advanced Filter</p> </div>
+    <div class="compare"  @click="show_compare"> 
+      <p>Compare</p>
+    </div>
 
     <!-- <button class="request" type="button" @click="getRegion2" >REQUEST</button> -->
 
@@ -244,6 +249,18 @@
       </div>
     </div>
 
+    <!-- advanced filter -->
+    <div v-if="advanced_filter" class="advanced_filter_container">
+      <img class="close_advanced_filter" src="./assets/uiIcons/close.png" alt="" @click="close_advanced_filter">
+      <AdvancedFilter />
+    </div>
+
+    <!-- compare -->
+    <div v-if="compare" class="compare_container">
+      <img class="close_compare" src="./assets/uiIcons/close.png" alt="" @click="close_compare">
+      <Compare />
+    </div>
+
   </div>
   
   
@@ -269,8 +286,12 @@ import { close_nav, open_nav } from "./Helpers/SideNavControls";
 import { leaflet_custom_controls } from "./CustomMapControls/LeafletCustomControls"
 import { onMounted, ref, watch, computed } from '@vue/runtime-core';
 import { useCounterStore } from '@/stores/counter';
+import AdvancedFilter from './components/AdvancedFilter.vue';
+import Compare from './components/Compare.vue';
 
 //refs go here
+let advanced_filter = ref(false)
+let compare = ref(false)
 let map;
 let sidebar = ref(null)
 let show_sidenav = ref(false)
@@ -298,12 +319,26 @@ let loading = ref(false)
 let wmsLayer= ref(null);
 
 
+
 //variables
 const storeUserSelections = useCounterStore()
 
 console.log(storeUserSelections.fetchCountriesList)
 
 console.log(storeUserSelections.getLoadingState, 'getLoadingState')
+
+const show_advanced_filter = () =>{
+  advanced_filter.value = true
+}
+const show_compare = () =>{
+  compare.value = true
+}
+const close_advanced_filter = () =>{
+  advanced_filter.value = false
+}
+const close_compare = () =>{
+  compare.value = false
+}
 
 let osm = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",

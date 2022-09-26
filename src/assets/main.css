@@ -352,3 +352,88 @@ color: #fff;
 background-color: rgb(180, 28, 160);
 cursor: pointer;
 }
+.advanced_filter{
+  cursor: pointer;
+  border-left: 35px solid #000;
+  border-bottom: 15px solid transparent;
+  border-top: 15px solid transparent;
+  height: 165px;
+  width: 0;
+  position: absolute;
+  left:-.2vw;
+  z-index: 2500;
+top: 33vh;
+
+}
+.advanced_filter p{
+  
+  color: #fcfafa;
+  position: relative;
+  left: -3.5vw;
+  transform: rotate(270deg);
+  display: inline-block;
+  top: 57px;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.compare{
+  cursor: pointer;
+  border-left: 35px solid #000;
+  border-bottom: 15px solid transparent;
+  border-top: 15px solid transparent;
+  height: 165px;
+  width: 0;
+  position: absolute;
+  left:-.2vw;
+  z-index: 2500;
+top: 54vh;
+
+
+}
+.compare p{
+  
+  color: #fcfafa;
+  position: relative;
+  left: -2.5vw;
+  transform: rotate(270deg);
+  display: inline-block;
+  top: 56px;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.advanced_filter_container{
+  position: absolute;
+  left:1.7vw;
+  z-index: 2500;
+top: 33vh;
+/* background-color: aqua; */
+}
+.close_advanced_filter{
+  position: absolute;
+  /* background-color: #d31ae4; */
+  /* height: 50px;
+  width: 50px; */
+  top: 1vh;
+  left: 14vw;
+  cursor: pointer;
+}
+.compare_container{
+  position: absolute;
+  left:1.7vw;
+  z-index: 2500;
+top: 56vh;
+/* background-color: aqua; */
+}
+.close_compare{
+  position: absolute;
+  /* background-color: #d31ae4; */
+  /* height: 50px;
+  width: 50px; */
+  top: 1vh;
+  left: 14vw;
+  cursor: pointer;
+  z-index: 3000;
+}
