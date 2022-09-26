@@ -12,6 +12,7 @@
     "leaflet": "^1.8.0",
     "leaflet-draw": "^1.0.4",
     "leaflet-sidebar-v2": "^3.2.3",
+    "leaflet.wms": "^0.2.0",
     "pinia": "^2.0.21",
     "vue": "^3.2.38",
     "vue-router": "^4.1.5"

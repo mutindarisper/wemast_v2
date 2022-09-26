@@ -108,7 +108,15 @@ export const useCounterStore = defineStore({
       sub_indicator_list:[],
       year_list:[],
       region_placeholder:'Cuvelai',
-      selected_basin:''
+      selected_basin:'',
+      indicator_placeholder:'Exposure',
+      selected_indicator:'',
+
+      sub_indicator_placeholder:'Land Cover',
+      selected_sub_indicator:'',
+
+      year_placeholder:'2019',
+      selected_year:''
   }),
  
   actions: {
@@ -166,13 +174,7 @@ export const useCounterStore = defineStore({
       console.log(this.selected_basin , 'changed selected basin')
       // // return selected_country
       var data = this.selected_basin
-      
      
-      // console.log(data, 'data')
-
-  
-
-
 //using async await
 
       if(data) {
@@ -202,7 +204,33 @@ export const useCounterStore = defineStore({
 
       }
 
+      
+
     },
+    showSelectedIndicator(option) {
+      this.indicator_placeholder = option;
+      console.log(option, 'selected indicator ')
+
+      this.selected_indicator =  option
+      console.log(this.selected_indicator , 'changed selected indicator')
+    },
+
+    showSelectedSubIndicator(option) {
+      this.sub_indicator_placeholder = option;
+      console.log(option, 'selected sub-indicator ')
+
+      this.selected_sub_indicator =  option
+      console.log(this.selected_sub_indicator , 'changed selected sub-indicator')
+    },
+    showSelectedYear(option) {
+      this.year_placeholder = option;
+      console.log(option, 'selected year ')
+
+      this.selected_year=  option
+      console.log(this.selected_year , 'changed selected year')
+    },
+
+    
 
     fetchCausesList() {
       var data = this.selected_region
@@ -480,6 +508,51 @@ export const useCounterStore = defineStore({
       }
       fetchKwaleRequest();  
 
+    },
+
+
+    //trial fetchData
+    fetchData(){
+      if(this.selected_basin === 'Kiambu' && this.selected_indicator === 'Exposure' && this.selected_sub_indicator === 'Land Cover' && this.selected_year === '2020'){
+        console.log('kiambu data  fetched')
+      }else{
+        console.log('no data')
+      }
+    },
+
+
+    async findData() {
+      try {
+        // this.loading = true
+        const response = await axios.post(
+          "https://wemast.geoimagesolutions.com/wemast-api-back-end-0.1/api/dataserver/finddata",
+          {
+            basin: this.selected_basin,
+            indicator: this.selected_indicator,
+            year: this.selected_year,
+            geometry:  this.current_geojson
+          },
+
+          {
+            headers: {
+              sdf09rt2s: "locateit",
+            },
+          }
+        );
+      //   if (process.env.DEV) console.log("find data response ", response.data);
+      //   await this.getWMS_Layer({
+      //     layers: response.data.layername,
+      //   });
+      //  await  this.getLegend({
+      //     base_url: response.data.geoserver,
+      //     legend_url: response.data.legendurl,
+      //   });
+      //   await this.getStatistics();
+        //  this.loading = false
+      } catch (error) {
+        // if (process.env.DEV) console.log("find data error ", error);
+        //  this.$q.loading.hide()
+      }
     }
   },
 

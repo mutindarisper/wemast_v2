@@ -8,6 +8,8 @@
       <DashboardSelections />
     </div>
 
+    <!-- <button class="request" type="button" @click="getRegion2" >REQUEST</button> -->
+
 
     <div  class="spinner" v-if="loading">
             <img src="./assets/uiIcons/loader_white.svg" alt="">
@@ -260,7 +262,7 @@ import "leaflet-sidebar-v2";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw-src.css";
 import "leaflet-draw";
-
+import "leaflet.wms"
 // import "leaflet-draw/dist/leaflet.draw";
 import SideBarView from "./views/SideBarView.vue"
 import { close_nav, open_nav } from "./Helpers/SideNavControls";
@@ -293,6 +295,7 @@ let editableLayers = ref(null) //draw control
 window.type = true;
 var current_geojson = ref(null)
 let loading = ref(false)
+let wmsLayer= ref(null);
 
 
 //variables
@@ -677,6 +680,39 @@ document
  
 }
 
+const getRegion2 = () => {  
+ 
+ //  loading = true
+  // console.log(loading.value, 'loading')
+ //  if(kiambu)map.removeLayer(kiambu)
+ //  if(kiambu_points.value)map.removeLayer(kiambu_points.value)
+  if(current_geojson.value)map.removeLayer(current_geojson.value)
+ //  if(current_point_geojson.value)map.removeLayer(current_point_geojson.value)
+ 
+  var selecteRegion = storeUserSelections.getSelectedRegion
+  console.log(selecteRegion, 'selected region app')
+ //  loading = storeUserSelections.getLoadingState
+ 
+  // console.log(region)
+  current_geojson.value = L.geoJSON(selecteRegion, {
+          style: {
+            color: "magenta",
+            opacity: 0.8
+          }
+         //  pane: 'right'
+           })
+  
+ 
+  current_geojson.value.addTo(map)
+ // loading = false
+ 
+            map.fitBounds(current_geojson.value.getBounds(), {
+                            padding: [50, 50],
+                          }); 
+  
+ }
+ 
+
 
 //watch for changes
 
@@ -706,6 +742,28 @@ const setLoadingState= computed( () => {
   loading.value = storeUserSelections.getLoadingState
   
 })
+
+
+const getKwaleRaster = () => {
+
+// if(wmsLayer.value)map.removeLayer(wmsLayer.value)
+
+// var selectedLayer= storeUserSelections.getSelectedLayerName
+// console.log(selectedLayer, 'selected geoserver layer home')
+              
+// var kwaleRaster = storeUserSelections.getSelectRaster
+wmsLayer.value = L.tileLayer.wms("http://localhost:8005/geoserver/rasters/wms", {
+      // pane: 'left',
+      layers: 'rasters:kiambu_clip1',
+      format: 'image/png',
+      transparent: true,  
+      opacity:1
+});
+wmsLayer.value.addTo(map);
+
+
+
+}
 
 </script>
 

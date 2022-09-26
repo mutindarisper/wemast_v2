@@ -37,7 +37,7 @@
             <CustomSelectYear />
         </div>
 
-        <button class="request" type="button">REQUEST</button>
+        <button class="request" type="button" @click="storeUserSelections.findData" >REQUEST</button>
         
 
     </div>
@@ -56,6 +56,11 @@ import CustomSelectYear from './CustomSelectYear.vue'
 // let counties = ref(['Limpopo', 'Cuvelai', 'Okavango', 'Zambezi'])
 
 const storeUserSelections = useCounterStore()
+
+// const fetchData = () => {
+//   console.log('fetch!')
+
+// }
 
 </script>
 

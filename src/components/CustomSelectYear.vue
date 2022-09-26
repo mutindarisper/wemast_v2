@@ -2,14 +2,16 @@
     <div class="aselect" :data-value="placeholder" :data-list="list">
       <div class="selector" @click="toggle()">
           <div class="label">
-                  <span>{{ placeholder }}</span>
+                  <span>{{ storeUserSelections.year_placeholder }}</span>
           </div>
           <!-- <div class="arrow" :class="{ expanded : visible }"></div> -->
           <img src="../assets/uiIcons/arrow_drop_down_circle.svg" alt="" class="arrow" :class="{ expanded : visible }">
           <div :class="{ hidden : !visible, visible }">
               <ul>
   
-                  <li :class="{ current : item === placeholder }" v-for="item in storeUserSelections.year_list" :key="item" @click="select(item)">{{ item }}</li>
+                  <li :class="{ current : item === storeUserSelections.year_placeholder }" 
+                  v-for="item in storeUserSelections.year_list" :key="item"
+                  @click="storeUserSelections.showSelectedYear(item)">{{ item }}</li>
                   
               </ul>
           </div>
