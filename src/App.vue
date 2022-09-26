@@ -260,7 +260,7 @@ import "leaflet-draw";
 import SideBarView from "./views/SideBarView.vue"
 import { close_nav, open_nav } from "./Helpers/SideNavControls";
 import { leaflet_custom_controls } from "./CustomMapControls/LeafletCustomControls"
-import { onMounted, ref } from '@vue/runtime-core';
+import { onMounted, ref, watch, computed } from '@vue/runtime-core';
 import { useCounterStore } from '@/stores/counter';
 
 //refs go here
@@ -647,15 +647,16 @@ document
 //  if(current_point_geojson.value)map.removeLayer(current_point_geojson.value)
 
  var selecteRegion = storeUserSelections.getSelectedRegion
+ console.log(selecteRegion, 'selected region app')
  // loading = storeUserSelections.getLoadingState
 
  // console.log(region)
  current_geojson.value = L.geoJSON(selecteRegion, {
          style: {
            color: "black",
-           opacity: 0.3
-         },
-         pane: 'right'
+           opacity: 0.8
+         }
+        //  pane: 'right'
           })
  
 
@@ -667,6 +668,23 @@ document
                          }); 
  
 }
+
+
+//watch for changes
+
+const setSelectedRegion = computed( () => {
+  console.log(storeUserSelections.selected_basin, 'selected_basin homeviiew')
+  // if(storeUserSelections.selected_region === 'Nyeri'){
+  //     $("#select2").show();
+  //   }else{
+  //     $("#select2").hide();
+  //   }
+  return storeUserSelections.getSelectedRegion
+})
+watch( setSelectedRegion , () => {
+  getRegion()
+  
+})
 </script>
 
 <style scoped>

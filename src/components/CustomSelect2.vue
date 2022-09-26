@@ -2,14 +2,16 @@
       <div class="aselect" :data-value="placeholder" >
 	    <div    class="selector" @click="toggle()" >
 	        <div class="label">
-				    <span>{{ placeholder }}</span>
+				    <span>{{ storeUserSelections.region_placeholder }}</span>
 	        </div>
-			<!-- <div class="arrow" :class="{ expanded : visible }"></div> -->
+			<!-- <div class="arrow" :class="{ expanded : visible }"></div>  @input="storeUserSelections.showSelectedCountry" -->
             <img src="../assets/uiIcons/arrow_drop_down_circle.svg" alt="" class="arrow" :class="{ expanded : visible }">
 	        <div :class="{ hidden : !visible, visible }">
 	            <ul>
     
-	                <li :class="{ current : item === placeholder }" v-for="item in storeUserSelections.countries" :key="item" @click="select(item)"   @input="storeUserSelections.showSelectedCountry">{{ item }}</li>
+	                <li :class="{ current : item === storeUserSelections.region_placeholder }" 
+					v-for="item in storeUserSelections.countries" :key="item"
+					 @click="storeUserSelections.showSelectedCountry(item)"   >{{ item }}</li>
                     
 	            </ul>
 	        </div>
@@ -45,16 +47,16 @@
 				// console.log(storeUserSelections.fetchCountriesList)
 				
             }
-			const select =  (option) =>{
+			const select = (option) =>{
 			    placeholder.value = option;
 				console.log(option, 'selected option ')
-				storeUserSelections.showSelectedCountry
+				// storeUserSelections.showSelectedCountry
 
 
 		// 		try{
 		// 			console.log(option, 'option inside')
 
-		// 		const resp = axios.get(baseurl+'/AdminData/get_adm1_shapefile?Get_county='+option
+		// 		const resp = await axios.get(baseurl+'/AdminData/get_adm1_shapefile?Get_county='+option
         //       );
               
 

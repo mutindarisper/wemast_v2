@@ -104,8 +104,11 @@ export const useCounterStore = defineStore({
       current_geoserver_geojson:{},
       crs:"",
       
-      indicator_list: ['hhuiiii','uuyft', 'fffgfh'], //wemast_v2_lists "Limpopo","Cuvelai","Zambezi", "Okavango",'South Africa', 'Kiambu'
-
+      indicator_list: [], //wemast_v2_lists "Limpopo","Cuvelai","Zambezi", "Okavango",'South Africa', 'Kiambu'
+      sub_indicator_list:[],
+      year_list:[],
+      region_placeholder:'Cuvelai',
+      selected_basin:''
   }),
  
   actions: {
@@ -121,6 +124,13 @@ export const useCounterStore = defineStore({
     fetchIndicatorList(){
       this.indicator_list = ['Exposure', 'Sensitivity','Resiliance','pogba']
     },
+    fetchSubIndicatorList(){
+      this.sub_indicator_list = ['Land Cover', 'Vegetation Cover', "Wetland Inventory"]
+    },
+    fetchYearList(){
+      this.year_list = ['2019','2020', '2021', "2022"]
+    },
+
 
     fetchKiambuCounty() {
       const sendGetRequest = async () => {
@@ -146,17 +156,19 @@ export const useCounterStore = defineStore({
     sendGetRequest();
 
     },
-    showSelectedCountry($event){
-      var selected_country = $event.target.value
-      console.log(selected_country, 'selected country')
+    showSelectedCountry(option){
+     this.region_placeholder = option;
+				console.log(option, 'selected basin ')
+      // var selected_country = $event.target.value
+      // console.log(selected_country, 'selected country')
       // this.countries =  selected_country
-      this.selected_region =  selected_country
-      console.log(this.selected_region , 'changed selected country')
-      // return selected_country
-      var data = this.selected_region
+      this.selected_basin =  option
+      console.log(this.selected_basin , 'changed selected basin')
+      // // return selected_country
+      var data = this.selected_basin
       
      
-      console.log(data, 'data')
+      // console.log(data, 'data')
 
   
 
@@ -166,16 +178,16 @@ export const useCounterStore = defineStore({
       if(data) {
         const sendGetRequest = async () => {
           try {
-            this.loading = true;
+            // this.loading = true;
               const resp = await  axios.get(baseurl+'/AdminData/get_adm1_shapefile?Get_county='+data
               );
               
 
               this.current_geojson = resp.data
               console.log(resp.data, 'await response data');
-              this.loading = false;
-              this.crs = resp.data.crs.properties.name
-              console.log(this.crs, 'crs')
+              // this.loading = false;
+              // this.crs = resp.data.crs.properties.name
+              // console.log(this.crs, 'crs')
               return resp.data
           } catch (err) {
               // Handle Error Here

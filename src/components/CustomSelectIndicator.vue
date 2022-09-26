@@ -9,7 +9,7 @@
           <div :class="{ hidden : !visible, visible }">
               <ul>
   
-                  <li :class="{ current : item === placeholder }" v-for="item in indicator_list" :key="item" @click="select(item)">{{ item }}</li>
+                  <li :class="{ current : item === placeholder }" v-for="item in storeUserSelections.indicator_list" :key="item" @click="select(item)">{{ item }}</li>
                   
               </ul>
           </div>
@@ -34,6 +34,7 @@
 
           const toggle = () => {
               visible.value = !visible.value;
+              storeUserSelections.fetchIndicatorList()
           }
           const select = (option) =>{
               placeholder.value = option;

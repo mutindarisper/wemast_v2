@@ -22,7 +22,7 @@
    </select>
         -->
 
-        <!-- <p class="select_cause">Select Indicator</p>
+        <p class="select_cause">Select Indicator</p>
         <div id="cause_selection">
           <CustomSelectIndicator />
         </div>
@@ -35,7 +35,7 @@
         <p class="select_year">Select Year</p>
         <div id="year_selection">
             <CustomSelectYear />
-        </div> -->
+        </div>
 
         <button class="request" type="button">REQUEST</button>
         
