@@ -5,7 +5,7 @@
                   <span>{{ storeUserSelections.indicator_placeholder }}</span>
           </div>
           <!-- <div class="arrow" :class="{ expanded : visible }"></div> -->
-          <img src="../assets/uiIcons/arrow_drop_down_circle.svg" alt="" class="arrow" :class="{ expanded : visible }">
+          <img src=" /uiIcons/arrow_drop_down_circle.svg" alt="" class="arrow" :class="{ expanded : visible }">
           <div :class="{ hidden : !visible, visible }">
               <ul>
   

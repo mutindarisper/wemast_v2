@@ -19,13 +19,13 @@
             <img class="wemast_logo" src="../assets/logos/WeMAST.png" alt="">
         </div>
         <div class="nav_icons">
-            <img class="home" src="../assets/uiIcons/home-landing.svg" alt="">
+            <img class="home" src=" /uiIcons/home-landing.svg" alt="">
             
-            <img class="dashboard" src="../assets/uiIcons/dashboard-24px.svg" alt="">
+            <img class="dashboard" src=" /uiIcons/dashboard-24px.svg" alt="">
            
-            <img class="person" src="../assets/uiIcons/person.svg" alt="">
+            <img class="person" src=" /uiIcons/person.svg" alt="">
             
-            <img class="search" src="../assets/uiIcons/search.svg" alt="">
+            <img class="search" src=" /uiIcons/search.svg" alt="">
            
 
         </div>

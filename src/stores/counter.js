@@ -534,9 +534,9 @@ export const useCounterStore = defineStore({
           },
 
           {
-            // headers: {
-            //   sdf09rt2s: "locateit",
-            // },
+            headers: {
+              sdf09rt2s: "locateit",
+            },
           }
         );
       //   if (process.env.DEV) console.log("find data response ", response.data);

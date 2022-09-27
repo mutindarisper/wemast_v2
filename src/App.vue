@@ -17,7 +17,7 @@
 
 
     <div  class="spinner" v-if="loading">
-            <img src="./assets/uiIcons/loader_white.svg" alt="">
+            <img src="/uiIcons/loader_white.svg" alt="">
         </div>
 
     <!-- <h1 class="header_countries">{{storeUserSelections.indicator_list}}</h1> -->
@@ -73,8 +73,8 @@
       <div id="mySidenav" style="height: 100%">
         <div id="protrusion" class="bg-white protrusion">
           <div class="toggle_icon" @click.stop="toggle_nav">
-            <img style="margin-left:2px" id="close" src="./assets/uiIcons/drawer.svg" v-if="!show_sidenav" />
-            <img id="open" src="./assets/uiIcons/drawer.svg" v-if="show_sidenav" />
+            <img style="margin-left:2px" id="close" src=" /uiIcons/drawer.svg" v-if="!show_sidenav" />
+            <img id="open" src=" /uiIcons/drawer.svg" v-if="show_sidenav" />
           </div>
         </div>
         <div class="sidenav_body" v-if="!show_sidenav">
@@ -251,13 +251,13 @@
 
     <!-- advanced filter -->
     <div v-if="advanced_filter" class="advanced_filter_container">
-      <img class="close_advanced_filter" src="./assets/uiIcons/close.png" alt="" @click="close_advanced_filter">
+      <img class="close_advanced_filter" src=" /uiIcons/close.png" alt="" @click="close_advanced_filter">
       <AdvancedFilter />
     </div>
 
     <!-- compare -->
     <div v-if="compare" class="compare_container">
-      <img class="close_compare" src="./assets/uiIcons/close.png" alt="" @click="close_compare">
+      <img class="close_compare" src=" /uiIcons/close.png" alt="" @click="close_compare">
       <Compare />
     </div>
 
